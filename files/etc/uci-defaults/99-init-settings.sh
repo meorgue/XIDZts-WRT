@@ -128,7 +128,7 @@ echo "Setting up package management and repositories..."
 sed -i 's/^option check_signature/# option check_signature/g' /etc/opkg.conf
 
 # Menambahkan repositori ke customfeeds.conf
-echo "src/gz openwrt_packages https://dl.openwrt.ai/latest/packages/$(grep 'OPENWRT_ARCH' /etc/os-release | awk -F '"' '{print $2}')/kiddin9" >> /etc/opkg/customfeeds.conf
+echo "src/gz custom_packages https://dl.openwrt.ai/latest/packages/$(grep 'OPENWRT_ARCH' /etc/os-release | awk -F '"' '{print $2}')/kiddin9" >> /etc/opkg/customfeeds.conf
 
 # sett default tema
 echo "set default tema"
