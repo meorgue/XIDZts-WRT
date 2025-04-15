@@ -2,7 +2,8 @@
 
 exec > /root/setup.log 2>&1
 
-# dont remove!
+
+# dont remove
 echo "Installed Time: $(date '+%A, %d %B %Y %T')"
 sed -i "s#_('Firmware Version'),(L.isObject(boardinfo.release)?boardinfo.release.description+' / ':'')+(luciversion||''),#_('Firmware Version'),(L.isObject(boardinfo.release)?boardinfo.release.description+' By Xidz_x':''),#g" /www/luci-static/resources/view/status/include/10_system.js
 sed -i -E "s|icons/port_%s.png|icons/port_%s.gif|g" /www/luci-static/resources/view/status/include/29_ports.js
@@ -16,10 +17,11 @@ elif grep -q "OpenWrt" /etc/openwrt_release; then
 fi
 echo "Tunnel Installed: $(opkg list-installed | grep -e luci-app-openclash -e luci-app-nikki -e luci-app-passwall | awk '{print $1}' | tr '\n' ' ')"
 
-# Set login root password
+# set login root password
+echo "Set login root password"
 (echo "xidz"; sleep 2; echo "xidz") | passwd > /dev/null
 
-# Set hostname and Timezone to Asia/Jakarta
+# sett hostbame dan timezone
 echo "Set hostname and Timezone to Asia/Jakarta"
 uci set system.@system[0].hostname='XIDZ-WRT'
 uci set system.@system[0].timezone='WIB-7'
@@ -30,10 +32,11 @@ uci add_list system.ntp.server="id.pool.ntp.org"
 uci add_list system.ntp.server="time.google.com"
 uci commit system
 
-# set bahasa default
+# set bahasa
+echo "set bahasa default"
 uci set luci.@core[0].lang='en' && uci commit
 
-# configure wan and lan
+# wan dan lan
 echo "configure wan and lan"
 uci set network.WAN=interface
 uci set network.WAN.proto='dhcp'
@@ -60,18 +63,23 @@ uci commit network
 uci set firewall.@zone[1].network='WAN WAN2 MODEM MM'
 uci commit firewall
 
-# configure ipv6
+# ipv6
+echo "configurasi ipv6"
 uci -q delete dhcp.lan.dhcpv6
 uci -q delete dhcp.lan.ra
 uci -q delete dhcp.lan.ndp
 uci commit dhcp
 
-# configure WLAN
-echo "Setup Wireless if available"
+# Setup Wireless if available
+echo "Setting up Wireless if available..."
+
+# Mengaktifkan perangkat wireless dan interface
 uci set wireless.@wifi-device[0].disabled='0'
 uci set wireless.@wifi-iface[0].disabled='0'
 uci set wireless.@wifi-iface[0].encryption='none'
 uci set wireless.@wifi-device[0].country='ID'
+
+# Memeriksa apakah perangkat adalah Raspberry Pi 4 atau 3
 if grep -q "Raspberry Pi 4\|Raspberry Pi 3" /proc/cpuinfo; then
   uci set wireless.@wifi-iface[0].ssid='XIDZ-WRT_5G'
   uci set wireless.@wifi-device[0].channel='149'
@@ -82,14 +90,23 @@ else
   uci set wireless.@wifi-device[0].channel='1'
   uci set wireless.@wifi-device[0].band='2g'
 fi
+
+# Menyimpan konfigurasi wireless
 uci commit wireless
+
+# Mengaktifkan wifi
 wifi reload && wifi up
+
+# Memeriksa apakah ada perangkat wireless yang terdeteksi
 if iw dev | grep -q Interface; then
-  if grep -q "Raspberry Pi 4\|Raspberry Pi 3" /proc/cpuinfo; then
+  # Jika perangkat adalah Raspberry Pi 5 or 4 or 3
+  if grep -q "Raspberry Pi 5\|Raspberry Pi 4\|Raspberry Pi 3" /proc/cpuinfo; then
+    # Menambahkan perintah ke rc.local jika belum ada
     if ! grep -q "wifi up" /etc/rc.local; then
       sed -i '/exit 0/i # remove if you dont use wireless' /etc/rc.local
       sed -i '/exit 0/i sleep 10 && wifi up' /etc/rc.local
     fi
+    # Menambahkan cron job jika belum ada
     if ! grep -q "wifi up" /etc/crontabs/root; then
       echo "# remove if you dont use wireless" >> /etc/crontabs/root
       echo "0 */12 * * * wifi down && sleep 5 && wifi up" >> /etc/crontabs/root
@@ -100,29 +117,37 @@ else
   echo "No wireless device detected."
 fi
 
-# Remove sysinfo banner if Devices Amlogic
+# remove sysinfo banner
+echo "Remove sysinfo banner if Devices Amlogic"
 if opkg list-installed | grep luci-app-amlogic > /dev/null; then
     rm -rf /etc/profile.d/30-sysinfo.sh
 fi
 
-# custom repo and Disable opkg signature check
-echo "custom repo and Disable opkg signature check"
-sed -i 's/option check_signature/# option check_signature/g' /etc/opkg.conf
-echo "src/gz custom_pkg https://dl.openwrt.ai/latest/packages/$(grep "OPENWRT_ARCH" /etc/os-release | awk -F '"' '{print $2}')/kiddin9" >> /etc/opkg/customfeeds.conf
+echo "Setting up package management and repositories..."
+# Menonaktifkan opsi check_signature di opkg.conf
+sed -i 's/^option check_signature/# option check_signature/g' /etc/opkg.conf
 
-# setup default theme
+# Menambahkan repositori ke customfeeds.conf
+echo "src/gz openwrt_packages https://dl.openwrt.ai/latest/packages/$(grep 'OPENWRT_ARCH' /etc/os-release | awk -F '"' '{print $2}')/kiddin9" >> /etc/opkg/customfeeds.conf
+
+# sett default tema
+echo "set default tema"
 uci set luci.main.mediaurlbase='/luci-static/argon' && uci commit
 
-# remove login password ttyd
+# remove login pw ttyd
+echo "remove login password ttyd"
 uci set ttyd.@ttyd[0].command='/bin/bash --login' && uci commit
 
-# remove huawei me909s usb-modeswitch
+# remove huawei me909s
+echo "remove huawei me909s usb-modeswitch"
 sed -i -e '/12d1:15c1/,+5d' /etc/usb-mode.json
 
-# remove dw5821e usb-modeswitch
+# remove dw5821
+echo "remove dw5821e usb-modeswitch"
 sed -i -e '/413c:81d7/,+5d' /etc/usb-mode.json
 
-# Disable /etc/config/xmm-modem
+# disable xmm-modem
+echo "Disable /etc/config/xmm-modem"
 uci set xmm-modem.@xmm-modem[0].enable='0' && uci commit
 
 # setup misc settings
@@ -134,26 +159,32 @@ chmod +x /usr/lib/ModemManager/connection.d/10-report-down
 chmod -R +x /sbin
 chmod -R +x /usr/bin
 
-# netdata
+# setting Tinyfm
+echo "Setting Tinyfm"
+ln -s / /www/tinyfm/rootfs
+
+# move netdata
+echo "move netdata"
 mv /usr/share/netdata/web/lib/jquery-3.6.0.min.js /usr/share/netdata/web/lib/jquery-2.2.4.min.js
 
-# Setup Auto Vnstat Database Backup
+# setup vnstat database backup
 echo "Setup Auto Vnstat Database Backup"
 mkdir /etc/vnstat
 chmod +x /etc/init.d/vnstat_backup
 bash /etc/init.d/vnstat_backup enable
 
-# vnstati
 echo "configuring netdata"
+# Memberikan izin eksekusi pada skrip vnstati.sh
 chmod +x /www/vnstati/vnstati.sh
+
+# Merestart layanan netdata dan vnstat
 /etc/init.d/netdata restart
 /etc/init.d/vnstat restart
-/www/vnstati/vnstati.sh
 
-# Setting Tinyfm
-ln -s / /www/tinyfm/rootfs
+# Menjalankan skrip vnsrati.sh
+bash /www/vnstati/vnsrati.sh
 
-# configurating openclash
+# Tunnelling
 if opkg list-installed | grep luci-app-openclash > /dev/null; then
   echo "Openclash Detected!"
   echo "Configuring Core..."
@@ -180,7 +211,7 @@ else
   rm -rf /etc/openclash
 fi
 
-# configurating Nikki
+echo "configurating Nikki"
 if opkg list-installed | grep luci-app-nikki > /dev/null; then
   echo "setup complete!"
   chmod +x /etc/nikki/run/GeoIP.dat
@@ -191,10 +222,10 @@ else
   rm -rf /etc/nikki
 fi
 
-# remove
+echo "remove storage.js"
 rm -rf /www/luci-static/resources/view/status/include/25_storage.js
 
-# Setup PHP
+# setup php
 echo "setup php"
 uci set uhttpd.main.ubus_prefix='/ubus'
 uci set uhttpd.main.interpreter='.php=/usr/bin/php-cgi'
@@ -208,6 +239,8 @@ ln -s /usr/bin/php-cli /usr/bin/php
 [ -d /usr/lib/php8 ] && [ ! -d /usr/lib/php ] && ln -sf /usr/lib/php8 /usr/lib/php
 /etc/init.d/uhttpd restart
 
-echo "All first boot setup complete!"
+echo "All first boot setup complete"
 rm -f /etc/uci-defaults/$(basename $0)
+reboot
+
 exit 0
