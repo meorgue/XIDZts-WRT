@@ -23,15 +23,14 @@ REPOS+=(
 declare -a packages_custom
 packages_custom+=(
     "modeminfo_|${REPOS[KIDDIN9]}"
-    "luci-app-modeminfo_|${REPOS[DLLKIDS]}"
-    #  "modeminfo-serial-fm350_|${REPOS[KIDDIN9]}"
+    "luci-app-modeminfo_|${REPOS[KIDDIN9]}"
+    "modeminfo-serial-fm350_|${REPOS[DLLKIDS]}"
     "modeminfo-serial-tw_|${REPOS[KIDDIN9]}"
     "modeminfo-serial-dell_|${REPOS[KIDDIN9]}"
     "modeminfo-serial-sierra_|${REPOS[KIDDIN9]}"
     "modeminfo-serial-xmm_|${REPOS[KIDDIN9]}"
     "modeminfo-serial-fibocom_|${REPOS[KIDDIN9]}"
     "modeminfo-serial-sierra_|${REPOS[KIDDIN9]}"
-    "modeminfo-serial-fm350_|${REPOS[DLLKIDS]}"
     
     "fm350-modem_|${REPOS[DLLKIDS]}"
     "luci-proto-fm350_|${REPOS[DLLKIDS]}"
@@ -43,12 +42,10 @@ packages_custom+=(
     
     "luci-app-lite-watchdog_|${REPOS[KIDDIN9]}"
     "luci-app-speedtest-web_|${REPOS[KIDDIN9]}"
-    "luci-app-macvlan_|${REPOS[KIDDIN9]}"
     "luci-app-fancontrol_|${REPOS[KIDDIN9]}"
     "luci-app-atcommands_|${REPOS[KIDDIN9]}"
     
     "luci-app-oled_|${REPOS[KIDDIN9]}"
-    "luci-app-tinyfilemanager_|${REPOS[DLLKIDS]}"
     "modemband_|${REPOS[IMMORTALWRT]}/packages"
     "luci-app-ramfree_|${REPOS[IMMORTALWRT]}/luci"
     "luci-app-modemband_|${REPOS[IMMORTALWRT]}/luci"
@@ -63,6 +60,7 @@ packages_custom+=(
     "internet-detector-mod-modem-restart_|${REPOS[GSPOTX2F]}"
     "luci-app-temp-status_|${REPOS[GSPOTX2F]}"
     
+    "luci-app-tinyfm_|https://api.github.com/repos/bobbyunknown/luci-app-tinyfm/releases/latest"
     "luci-app-droidnet_|https://api.github.com/repos/animegasan/luci-app-droidmodem/releases/latest"
     "luci-theme-alpha_|https://api.github.com/repos/derisamedia/luci-theme-alpha/releases/latest"
     "luci-app-neko_|https://api.github.com/repos/nosignals/openwrt-neko/releases/latest"
