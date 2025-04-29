@@ -6,12 +6,18 @@ on:
       release_branch:
         description: "Select the release branch:"
         required: true
-        default: "openwrt:24.10.0"
+        default: "openwrt:24.10.1"
         type: choice
         options:
           - openwrt:24.10.1
+          - openwrt:24.10.2
+          - openwrt:24.10.3
+          - openwrt:24.10.4
           - openwrt:23.05.5
           - immortalwrt:24.10.1
+          - immortalwrt:24.10.2
+          - immortalwrt:24.10.3
+          - immortalwrt:24.10.4
           - immortalwrt:23.05.4
       target:
         description: "Select device board"
@@ -25,15 +31,16 @@ on:
           - X86-64
           - Nanopi-r2s
           - Nanopi-r3s
-          - Nanopi-r4s
-          - Nanopi-r5s
-          - Nanopi-r6s
           - Orangepi R1 Plus
           - Orangepi R1 Plus LTS
+          - Orangepi Pc 2
+          - Orangepi Zero Plus
+          - Orangepi Zero 2
+          - Orangepi Zero 3
       tunnel:
-        description: "Select VPN Client app:"
+        description: "Select Tunnel VPN"
         required: true
-        default: "nikki"
+        default: "openclash"
         type: choice
         options:
           - openclash
@@ -43,7 +50,7 @@ on:
           - no-tunnel
       clean:
         description: "Do 'make clean' for each run"
-        required: true
+        required: false
         default: "true"
         type: boolean
 
@@ -90,11 +97,12 @@ jobs:
               "X86-64",
               "Nanopi-r2s",
               "Nanopi-r3s",
-              "Nanopi-r4s",
-              "Nanopi-r5s",
-              "Nanopi-r6s",
               "Orangepi R1 Plus",
-              "Orangepi R1 Plus LTS"
+              "Orangepi R1 Plus LTS",
+              "Orangepi Pc 2",
+              "Orangepi Zero Plus",
+              "Orangepi Zero 2",
+              "Orangepi Zero 3"
             ]
           }
           EOJ
@@ -156,19 +164,18 @@ jobs:
           name: ${{ steps.setupenv.outputs.release_name }}
           prerelease: ${{ github.ref_name == 'dev' }}
           body: |
-            ### XIDZ-WRT - Information ###
+            ## XIDZs-WRT - INFORMATION ##
             - Default IP: 192.168.1.1
             - Default username: root
-            - Default password: xidz
-            - Default WIFI name: XIDZ-WRT | XIDZ-WRT_5G
+            - Default password: xyyraa
+            - Default WIFI name: XIDZs-WRT | XIDZs-WRT_5G
             - Default WIFI password: none
-            ### Fitur - Fitur ###
+            ## FITUR - FITUR ##
             - 3ginfo-Lite | Modeminfo
             - IP Information
             - Tailscale
             - Eqosplus
             - Droidnet
-            - GPIO LED
             - Internet Detector
             - Conns monitor
             - Support Modem Rakitan + Autorekonek
@@ -337,6 +344,38 @@ jobs:
               echo "ARCH_1=arm64" >> $GITHUB_ENV
               echo "ARCH_2=aarch64" >> $GITHUB_ENV
               echo "ARCH_3=aarch64_generic" >> $GITHUB_ENV
+              ;;
+            "Orangepi Pc 2")
+              echo "PROFILE=xunlong_orangepi-pc2" >> $GITHUB_ENV
+              echo "TARGET_SYSTEM=sunxi/cortexa53" >> $GITHUB_ENV
+              echo "TARGET_NAME=sunxi-cortexa53" >> $GITHUB_ENV
+              echo "ARCH_1=arm64" >> $GITHUB_ENV
+              echo "ARCH_2=aarch64" >> $GITHUB_ENV
+              echo "ARCH_3=aarch64_cortex-a53" >> $GITHUB_ENV
+              ;;
+            "Orangepi Zero Plus")
+              echo "PROFILE=xunlong_orangepi-zero-plus" >> $GITHUB_ENV
+              echo "TARGET_SYSTEM=sunxi/cortexa53" >> $GITHUB_ENV
+              echo "TARGET_NAME=sunxi-cortexa53" >> $GITHUB_ENV
+              echo "ARCH_1=arm64" >> $GITHUB_ENV
+              echo "ARCH_2=aarch64" >> $GITHUB_ENV
+              echo "ARCH_3=aarch64_cortex-a53" >> $GITHUB_ENV
+              ;;
+            "Orangepi Zero 2")
+              echo "PROFILE=xunlong_orangepi-zero2" >> $GITHUB_ENV
+              echo "TARGET_SYSTEM=sunxi/cortexa53" >> $GITHUB_ENV
+              echo "TARGET_NAME=sunxi-cortexa53" >> $GITHUB_ENV
+              echo "ARCH_1=arm64" >> $GITHUB_ENV
+              echo "ARCH_2=aarch64" >> $GITHUB_ENV
+              echo "ARCH_3=aarch64_cortex-a53" >> $GITHUB_ENV
+              ;;
+            "Orangepi Zero 3")
+              echo "PROFILE=xunlong_orangepi-zero3" >> $GITHUB_ENV
+              echo "TARGET_SYSTEM=sunxi/cortexa53" >> $GITHUB_ENV
+              echo "TARGET_NAME=sunxi-cortexa53" >> $GITHUB_ENV
+              echo "ARCH_1=arm64" >> $GITHUB_ENV
+              echo "ARCH_2=aarch64" >> $GITHUB_ENV
+              echo "ARCH_3=aarch64_cortex-a53" >> $GITHUB_ENV
               ;;
           esac
 
