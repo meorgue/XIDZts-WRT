@@ -58,7 +58,15 @@ rename_firmware() {
         "-xunlong_orangepi-r1-plus-lts-squashfs-sysupgrade|Orangepi-R1-Plus-LTS-squashfs-sysupgrade"
         "-xunlong_orangepi-r1-plus-lts-ext4-sysupgrade|Orangepi-R1-Plus-LTS-ext4-sysupgrade"
         "-xunlong_orangepi-r1-plus-squashfs-sysupgrade|Orangepi-R1-Plus-squashfs-sysupgrade"
-        "-xunlong_orangepi-r1-plus-ext4-sysupgrade|Orangepi-R1-Plus-ext4-sysupgrade"
+        "-xunlong_orangepi-r1-plus-ext4-sysupgrade|Orangepi-R1-Plus-ext4-sysupgrade" 
+        "-xunlong_orangepi-pc2-squashfs-sdcard|Orangepi-Pc2-squashfs-sdcard"
+        "-xunlong_orangepi-pc2-ext4-sdcard|Orangepi-Pc2-ext4-sdcard"
+        "-xunlong_orangepi-zero-plus-squashfs-sdcard|Orangepi-Zero-Plus-squashfs-sdcard"
+        "-xunlong_orangepi-zero-plus-ext4-sdcard|Orangepi-Zero-Plus-ext4-sdcard"
+        "-xunlong_orangepi-zero2-squashfs-sdcard|Orangepi-Zero2-squashfs-sdcard"
+        "-xunlong_orangepi-zero2-ext4-sdcard|Orangepi-Zero2-ext4-sdcard"   
+        "-xunlong_orangepi-zero3-squashfs-sdcard|Orangepi-Zero3-squashfs-sdcard"
+        "-xunlong_orangepi-zero3-ext4-sdcard|Orangepi-Zero3-ext4-sdcard"
         
         # friendlyarm Official
         "-friendlyarm_nanopi-r2c-ext4-sysupgrade|Friendlyarm_Nanopi-R2C-ext4-sysupgrade"
@@ -98,8 +106,8 @@ rename_firmware() {
         "_s905x-b860h_|Amlogic_s905x_B860H"
         "_s912-nexbox-a1_|Amlogic_s912_NEXBOX_A1"
         "_s905l2_|Amlogic_s905l2_MGV_M301A"
-        "_s905x2-x96max-2g_|Amlogic_s905x2-x96Max2Gb"
-        "_s905x2_|Amlogic_s905x2_x96Max-4Gb"
+        "_s905x2-x96max-2g_|Amlogic_s905x2-x96Max2Gb-A95X-F2"
+        "_s905x2_|Amlogic_s905x2_x96Max-4Gb-Tx5-Max"
         "_s905x2-b860h-v5_|Amlogic_s905x2_B860Hv5"
         "_s905x2-hg680-fj_|Amlogic_s905x2_HG680-FJ"
         "_s905x3-x96air_|Amlogic_s905x3-X96Air100M"
@@ -107,6 +115,8 @@ rename_firmware() {
         "_s905x3-hk1_|Amlogic_s905x3-HK1BOX"
         "_s905x3_|Amlogic_s905x3_X96MAX+_100Mb"
         "_s905x3-x96max_|Amlogic_s905x3_X96MAX+_1Gb"
+        "_s905w_|Amlogic_s905w_TX3_Mini"
+        "_s905w-x96-mini_|Amlogic_s905w-X96-Mini"
         
         # Allwinner Ophub
         "_allwinner_orangepi-3_|Orangepi_3"
@@ -146,9 +156,9 @@ rename_firmware() {
                 fi
                 local new_name
                 if [[ -n "$kernel" ]]; then
-                    new_name="${OP_BASE}-${BRANCH}-${replace}-${kernel}-${TUNNEL}_Build_By_Fidz.img.gz"
+                    new_name="${OP_BASE}-${BRANCH}-${replace}-${kernel}-${TUNNEL}-By-Xidz_x.img.gz"
                 else
-                    new_name="${OP_BASE}-${BRANCH}-${replace}-${TUNNEL}_Build_By_Fidz.img.gz"
+                    new_name="${OP_BASE}-${BRANCH}-${replace}-${TUNNEL}-By-Xidz_x.img.gz"
                 fi
                 echo -e "${INFO} Renaming: $file → $new_name"
                 mv "$file" "$new_name" || {
@@ -160,7 +170,7 @@ rename_firmware() {
         for file in *"${search}"*.tar.gz; do
             if [[ -f "$file" ]]; then
                 local new_name
-                new_name="${OP_BASE}-${BRANCH}-${replace}-${TUNNEL}_Build_By_Fidz.tar.gz"
+                new_name="${OP_BASE}-${BRANCH}-${replace}-${TUNNEL}-By-Xidz_x.img.gz"
                 echo -e "${INFO} Renaming: $file → $new_name"
                 mv "$file" "$new_name" || {
                     echo -e "${WARN} Failed to rename $file"
